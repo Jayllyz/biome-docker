@@ -4,6 +4,7 @@ ARG TARGETPLATFORM
 ARG ARCH
 ARG BIOME_VERSION=1.7.3
 
+WORKDIR /usr/local/bin
 RUN if [ "${TARGETPLATFORM}" = "linux/arm64" ]; then \
     ARCH=arm64; \
     elif [ "${TARGETPLATFORM}" = "linux/amd64" ]; then \
@@ -11,10 +12,8 @@ RUN if [ "${TARGETPLATFORM}" = "linux/arm64" ]; then \
     else \
     echo "Error: Unsupported architecture ${TARGETPLATFORM}" >&2; \
     exit 1; \
-    fi
-
-WORKDIR /usr/local/bin
-RUN wget -O biome "https://github.com/biomejs/biome/releases/download/cli%2Fv${BIOME_VERSION}/biome-linux-${ARCH}-musl" && \
+    fi && \
+    wget -qO biome "https://github.com/biomejs/biome/releases/download/cli%2Fv${BIOME_VERSION}/biome-linux-${ARCH}-musl" && \
     chmod +x biome
 
 WORKDIR /data
