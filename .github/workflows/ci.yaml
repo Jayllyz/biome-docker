@@ -21,3 +21,4 @@ jobs:
       with:
           dockerfile:  "dockerfiles/**/*Dockerfile*"
           recursive: true
+          verbose: true
