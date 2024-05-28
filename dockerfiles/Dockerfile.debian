@@ -1,13 +1,24 @@
 FROM debian:stable-slim
 
+ARG TARGETPLATFORM
+ARG ARCH
 ARG BIOME_VERSION=1.7.3
 
-RUN apt-get update && apt-get install -y curl && \
-    apt get clean && \
+# hadolint ignore=DL3008
+RUN apt-get update && apt-get install --no-install-recommends -y curl ca-certificates && \
+    apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /usr/local/bin
-RUN curl -L "https://github.com/biomejs/biome/releases/download/cli%2Fv${BIOME_VERSION}/biome-linux-x64" -o biome && \
+RUN if [ "${TARGETPLATFORM}" = "linux/arm64" ]; then \
+    ARCH=arm64; \
+    elif [ "${TARGETPLATFORM}" = "linux/amd64" ]; then \
+    ARCH=x64; \
+    else \
+    echo "Error: Unsupported architecture ${TARGETPLATFORM}" >&2; \
+    exit 1; \
+    fi && \
+    curl -L "https://github.com/biomejs/biome/releases/download/cli%2Fv${BIOME_VERSION}/biome-linux-${ARCH}-musl" -o biome && \
     chmod +x biome
 
 WORKDIR /data
