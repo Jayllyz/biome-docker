@@ -1,9 +1,15 @@
 FROM alpine:3.20
 
+ARG ARCH=x64
 ARG BIOME_VERSION=1.7.3
 
+RUN if [ "${ARCH}" != "x64" ] && [ "${ARCH}" != "arm64" ]; then \
+    echo "Error: ARCH must be x64 or arm64" >&2; \
+    exit 1; \
+    fi
+
 WORKDIR /usr/local/bin
-RUN wget -O biome "https://github.com/biomejs/biome/releases/download/cli%2Fv${BIOME_VERSION}/biome-linux-x64-musl" && \
+RUN wget -O biome "https://github.com/biomejs/biome/releases/download/cli%2Fv${BIOME_VERSION}/biome-linux-${ARCH}-musl" && \
     chmod +x biome
 
 WORKDIR /data
