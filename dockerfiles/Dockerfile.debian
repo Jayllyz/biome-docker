@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y curl && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /usr/local/bin
-RUN curl -L "https://github.com/biomejs/biome/releases/download/cli%2Fv${BIOME_VERSION}/biome-linux-x64-musl" -o biome && \
+RUN curl -L "https://github.com/biomejs/biome/releases/download/cli%2Fv${BIOME_VERSION}/biome-linux-x64" -o biome && \
     chmod +x biome
 
 WORKDIR /data
