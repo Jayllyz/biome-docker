@@ -1,10 +1,15 @@
 FROM alpine:3.20
 
-ARG ARCH=x64
+ARG TARGETPLATFORM
+ARG ARCH
 ARG BIOME_VERSION=1.7.3
 
-RUN if [ "${ARCH}" != "x64" ] && [ "${ARCH}" != "arm64" ]; then \
-    echo "Error: ARCH must be x64 or arm64" >&2; \
+RUN if [ "${TARGETPLATFORM}" = "linux/arm64" ]; then \
+    ARCH=arm64; \
+    elif [ "${TARGETPLATFORM}" = "linux/amd64" ]; then \
+    ARCH=x64; \
+    else \
+    echo "Error: Unsupported architecture ${TARGETPLATFORM}" >&2; \
     exit 1; \
     fi
 
