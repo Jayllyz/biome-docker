@@ -1,14 +1,16 @@
-FROM alpine:3.20
+FROM debian:stable-slim
 
 ARG BIOME_VERSION=1.7.3
 
-RUN apk add --no-cache curl gcompat libgcc
+RUN apt-get update && apt-get install -y \
+    curl \
+    g++ && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /usr/local/bin
 RUN curl -L "https://github.com/biomejs/biome/releases/download/cli%2Fv${BIOME_VERSION}/biome-linux-x64" -o biome \
     && chmod +x biome
 
 WORKDIR /data
-SHELL [ "/bin/sh", "-c" ]
-ENTRYPOINT ["biome"]
-CMD ["--help"]
+ENTRYPOINT ["/usr/local/bin/biome"]
