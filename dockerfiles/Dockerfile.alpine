@@ -2,7 +2,7 @@ FROM alpine:3.20
 
 ARG TARGETPLATFORM
 ARG ARCH
-ARG BIOME_VERSION=1.8.0
+ARG BIOME_VERSION=1.8.2
 
 WORKDIR /usr/local/bin
 RUN if [ "${TARGETPLATFORM}" = "linux/arm64" ]; then \
